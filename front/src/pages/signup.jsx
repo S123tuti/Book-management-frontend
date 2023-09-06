@@ -1,113 +1,99 @@
-import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import './signup.css'
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./signup.css";
 
 const SignUp = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const [input, setInput] = useState({
+    title: "",
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
 
-    const [title, setTitle] = useState('')
-    const [name, setName] = useState('')
-    const [phone, setPhone] = useState()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+  const handleChange = (e) => {
+    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+   console.log(input)
+  const SignUp = async (e) => {
+    e.preventDefault();
+    
+    let result = await fetch("http://localhost:5000/register", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
 
+    result = await result.json();
 
-    const SignUp = async (e) => {
-        e.preventDefault();
-        // console.log(title, name, phone, email, password);
-
-        let result = await fetch('http://localhost:5000/register', {
-            method: "post",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, name, phone, email, password })
-        });
-
-        result = await result.json()
-
-        if (result.status == false) {
-            alert(result.message)
-
-        } else {
-            localStorage.setItem("userId", JSON.stringify(result.data.userId))
-            localStorage.setItem("token", JSON.stringify(result.data.token))
-            console.log(result);
-            navigate('/login')
-        }
+    if (result.status === false) {
+      alert(result.message);
+    } else {
+      localStorage.setItem("userId", JSON.stringify(result.data.userId));
+      localStorage.setItem("token", JSON.stringify(result.data.token));
+      console.log(result);
+      navigate("/login");
     }
+  };
 
+  return (
+    <div className="signup">
+      <h1>SignUp</h1>
 
+        <form className="signup-input">
+          <input
+            className="inp"
+            required
+            type="text"
+            placeholder="title"
+            name="title"
+            onChange={handleChange}
+          />
 
-    return (
+          <input
+          className="inp"
+            type="text"
+            placeholder="name"
+            name="name"
+            onChange={handleChange}
+          />
 
-        <div className="signup">
-            <h3>
-                SignUp
-            </h3>
+          <input
+            className="inp"
+            type="email"
+            placeholder="email"
+            name="email"
+            onChange={handleChange}
+          />
 
-            <div className="signup-input">
-                <form>
+          <input
+            className="inp"
+            type="tel"
+            placeholder="Phone"
+            name="phone"
+            onChange={handleChange}
+          />
 
-                    <label>title: </label>
-                    <input
-                        type='text'
-                        placeholder="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    /><br />
-                    <label>name: </label>
-                    <input
-                        type='text'
-                        placeholder="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    /><br />
-                    <label>email: </label>
-                    <input
-                        type='email'
-                        placeholder="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    /><br />
-                    <label>phone: </label>
-                    <input
-                        type='tel'
-                        placeholder="Phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                    /><br />
-                    <label>password: </label>
-                    <input
-                        type='password'
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    /><br /><br />
+          <input
+            className="inp"
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={handleChange}
+          />
+    
+          <button className="btn" type="submit" onClick={SignUp}>
+            SignUp
+          </button>
 
-                    {/* <label>address: </label>
-                <input
-                    type='text'
-                    placeholder="address"
-                /><br /><br /> */}
+          <span>
+            Already have an account ? <Link to="/login">Login.</Link>
+          </span>
+        </form>
+      </div>
+  );
+};
 
-                    {/* <Link to="/login" > */}
-                    <button className="btn" type="submit" onClick={SignUp}>SignUp</button><br />
-                    {/* </Link> */}
-
-                    <span>
-                        Already have an account ? <Link to="/login">Login.</Link>
-                    </span>
-
-                </form>
-            </div>
-
-
-
-
-        </div>
-    )
-
-}
-
-export default SignUp
+export default SignUp;

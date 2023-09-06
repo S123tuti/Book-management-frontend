@@ -1,14 +1,38 @@
+
+
 .signup {
-    margin-right: 0;
+   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.signup-input {
+.signup-input{
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    background-color: white;
+    width: 200px;
+}
 
-position:absolute;
-top:50%;
-left:50%;
-transform: translate(-50%, -50%);
-border: 2px solid black;
-border-radius: 10px;
-padding: 20px;
+.inp{
+    padding: 10px;
+    cursor: pointer;
+    border: 2px solid black;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.btn{
+    padding: 10px;
+    border: none;
+    background-color: teal;
+    cursor:pointer;
+    color: black;
+}
+
+.btn:hover{
+   background-color: white;
 }
